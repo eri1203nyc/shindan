@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自分に合った働き方が分かる強み診断</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose: #c8857a;
+  --rose-light: #f2e4e1;
+  --rose-pale: #faf5f4;
+  --teal: #3d8b85;
+  --teal-dark: #2a6b66;
+  --brown: #6b4c3b;
+  --brown-light: #a07060;
+  --cream: #fdf9f7;
+  --text: #3d2c25;
+  --text-light: #7a5c50;
+  --border: #e8d5cf;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--rose-pale);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+.header {
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  padding: 2rem 1rem 1.5rem;
+  text-align: center;
+}
+.header-diamond {
+  color: var(--rose);
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+.header h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
+  font-weight: 600;
+  color: var(--brown);
+  line-height: 1.5;
+}
+.header p {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  margin-top: 0.4rem;
+}
+
+/* ===== SCREENS ===== */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ===== INTRO ===== */
+.intro-wrap {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 2rem 1.2rem 3rem;
+}
+.intro-card {
+  background: var(--cream);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.intro-card h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.15rem;
+  color: var(--brown);
+  margin-bottom: 1rem;
+}
+.intro-card p {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+.form-group {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+.form-group label {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--brown);
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group select:focus {
+  border-color: var(--rose);
+}
+.btn-start {
+  width: 100%;
+  padding: 0.9rem;
+  background: var(--rose);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-start:hover { background: var(--brown-light); }
+.btn-start:active { transform: scale(0.98); }
+
+/* ===== QUESTIONS ===== */
+.q-wrap {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 1.5rem 1.2rem 3rem;
+}
+.progress-bar-wrap {
+  margin-bottom: 1.5rem;
+}
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-light);
+  margin-bottom: 0.4rem;
+}
+.progress-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--rose);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+.axis-badge {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+}
+.axis-1 { background: #eeedfe; color: #3c3489; }
+.axis-2 { background: #e1f5ee; color: #085041; }
+.axis-3 { background: #faece7; color: #4a1b0c; }
+.axis-4 { background: #faeeda; color: #412402; }
+
+.q-card {
+  background: var(--cream);
+  border-radius: 16px;
+  padding: 1.8rem 1.5rem;
+  border: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+.q-number {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.q-text {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.98rem;
+  color: var(--brown);
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+}
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.choice-btn {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1.5;
+}
+.choice-btn:hover {
+  border-color: var(--rose);
+  background: var(--rose-light);
+}
+.choice-btn.selected {
+  border-color: var(--rose);
+  background: var(--rose-light);
+  color: var(--brown);
+  font-weight: 500;
+}
+.choice-label {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--rose-light);
+  color: var(--rose);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 22px;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+.choice-btn.selected .choice-label {
+  background: var(--rose);
+  color: white;
+}
+.choice-inner { display: flex; align-items: flex-start; gap: 0; }
+
+.nav-btns {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+.btn-prev {
+  padding: 0.75rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-prev:hover { border-color: var(--rose); color: var(--rose); }
+.btn-next {
+  flex: 1;
+  padding: 0.75rem;
+  background: var(--rose);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-next:hover { background: var(--brown-light); }
+.btn-next:disabled { background: var(--border); cursor: not-allowed; }
+
+.axis-summary {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+  font-size: 0.82rem;
+  color: var(--text-light);
+}
+.axis-summary strong { color: var(--brown); }
+
+/* ===== RESULT ===== */
+.result-wrap {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1.5rem 1.2rem 4rem;
+}
+.result-header {
+  background: var(--cream);
+  border-radius: 16px;
+  padding: 1.8rem 1.5rem;
+  border: 1px solid var(--border);
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+.result-greeting {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.3rem;
+}
+.result-name-display {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.3rem;
+  color: var(--brown);
+  margin-bottom: 1rem;
+}
+.result-axes {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+.axis-result-pill {
+  padding: 0.3rem 0.9rem;
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.result-section {
+  background: var(--cream);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+.result-section-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.92rem;
+  color: var(--teal);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.result-section-title.hidden-strength {
+  color: var(--brown-light);
+}
+.result-section-title.like { color: var(--teal); }
+.result-section-title.dislike { color: var(--brown-light); }
+.result-section-title.workstyle { color: var(--teal-dark); }
+
+.result-items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.result-items li {
+  font-size: 0.87rem;
+  color: var(--text);
+  line-height: 1.6;
+  padding-left: 1rem;
+  position: relative;
+}
+.result-items li::before {
+  content: '・';
+  position: absolute;
+  left: 0;
+  color: var(--rose);
+}
+
+.result-text {
+  font-size: 0.87rem;
+  color: var(--text);
+  line-height: 1.9;
+}
+
+.cta-section {
+  background: linear-gradient(135deg, #f5e8e5 0%, #e8f2f0 100%);
+  border-radius: 16px;
+  padding: 1.8rem 1.5rem;
+  border: 1px solid var(--border);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.cta-section h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  color: var(--brown);
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+}
+.cta-section p {
+  font-size: 0.83rem;
+  color: var(--text-light);
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+.email-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.email-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  background: white;
+  transition: border-color 0.2s;
+}
+.email-input:focus { border-color: var(--rose); }
+.btn-register {
+  width: 100%;
+  padding: 0.9rem;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-register:hover { background: var(--teal-dark); }
+
+.btn-retry {
+  width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  color: var(--text-light);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+}
+.btn-retry:hover { border-color: var(--rose); color: var(--rose); }
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 480px) {
+  .two-col { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-diamond">◆</div>
+  <h1>自分に合った働き方が分かる<br>強み診断</h1>
+  <p>約20問であなたの生まれ持つ特性・強みを診断します</p>
+</div>
+
+<!-- INTRO -->
+<div id="screen-intro" class="screen active">
+  <div class="intro-wrap">
+    <div class="intro-card">
+      <h2>はじめに</h2>
+      <p>心理学と脳科学を取り入れた特性分析で、あなたのものの見方や意思決定の仕方を推測・診断します。<br>直感で答えてください。</p>
+      <div class="form-group">
+        <label>ご年代 <span style="color:var(--rose)">*</span></label>
+        <select id="input-age">
+          <option value="">選択してください</option>
+          <option>20～24</option>
+          <option>25～29</option>
+          <option>30～34</option>
+          <option>35～39</option>
+          <option>40～44</option>
+          <option>45～49</option>
+          <option>50～54</option>
+          <option>その他</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>働き方 <span style="color:var(--rose)">*</span></label>
+        <select id="input-work">
+          <option value="">選択してください</option>
+          <option>会社員（マネージャー）</option>
+          <option>会社員（リーダー）</option>
+          <option>会社員（メンバー）</option>
+          <option>個人事業主</option>
+          <option>その他</option>
+        </select>
+      </div>
+      <button class="btn-start" onclick="startDiagnosis()">診断スタート →</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUESTIONS -->
+<div id="screen-questions" class="screen">
+  <div class="q-wrap">
+    <div class="progress-bar-wrap">
+      <div class="progress-label">
+        <span id="progress-text">質問 1 / 20</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div id="axis-badge-wrap"></div>
+    <div class="q-card">
+      <div class="q-number" id="q-number"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="choices" id="choices"></div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" id="btn-prev" onclick="prevQ()">← 戻る</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>次へ →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="screen-result" class="screen">
+  <div class="result-wrap" id="result-content"></div>
+</div>
+
+<script>
+const QUESTIONS = [
+  // 軸1 (A/B) I/E
+  { axis:1, text:'疲れている時やストレスが溜まった時には？', a:'一人の時間が欲しくなる。', b:'（家族・親友以外の人）と一緒に過ごしたい。' },
+  { axis:1, text:'人と会話する時には？', a:'聞き役になることが多い。', b:'自分が話すことが多い。' },
+  { axis:1, text:'交友関係は？', a:'狭く深い方だ。', b:'広く浅い方だ。' },
+  { axis:1, text:'これまでの交友関係を振り返り、より楽しんできたのは？', a:'一対一もしくは少人数でじっくり話すこと', b:'大勢の集団でワイワイすること' },
+  { axis:1, text:'1週間、どちらかの状況で過ごすなら？', a:'電話やLINEなどの連絡手段も使えない状態で一人きりで過ごす', b:'初対面の人も含む集団の中で過ごす' },
+  // 軸2 (C/D) S/N
+  { axis:2, text:'飽きることなく、より長い時間続けられるのは？', a:'近況報告や思い出話など、具体的で地に足の着いた話', b:'抽象的な話、物事の背景を考えること（推測や洞察）' },
+  { axis:2, text:'物事や出来事について、より当てはまるのは？', a:'余計な解釈を挟まず額面通り受け止める。', b:'物事や出来事の間に関連性やパターンを見付け、何が言えそうか考えるのが好きだ。' },
+  { axis:2, text:'何かを説明する時は？', a:'できるだけ情報を落とさず詳細に伝える。', b:'よく例えを使い、概要を伝える。' },
+  { axis:2, text:'新しいことを学ぶ時、最初に知りたいのは？', a:'具体例やハウツーだ。', b:'全体像や目的だ。' },
+  { axis:2, text:'飽きることなくより長い時間続けられるのは？', a:'自ら手を動かしやってみること・体を使って体験すること', b:'本やネットで情報収集し、それをもとにあれこれ思考すること' },
+  { axis:2, text:'新しいアイデアが浮かぶのは？', a:'体や手先を動かす、シャワーを浴びる、自然の中を散歩するなど、五感を使っている時', b:'人と話している時' },
+  { axis:2, text:'より好きなのは？', a:'地に足のついた議論をすること', b:'物事を何かに例えたり、人と話しながらアイデアを自由に膨らませること' },
+  // 軸3 (E/F) F/T
+  { axis:3, text:'私生活で何かを決める時には？', a:'最終的に自分もしくは周りの感情を優先する。感情的納得感（これが好き、こうしたい等）を大事にする。', b:'ロジカルな結論を選ぶ。論理的納得感（こうするのが理にかなっている等）を大事にする。' },
+  { axis:3, text:'人との会話では？', a:'共感や感情的なつながりを大事にしている。', b:'役立つ・実利的な情報を共有することを大事にしている。' },
+  { axis:3, text:'ご自分の性格を表す表現が多く含まれるのは？', a:'情に脆い、涙もろい、感情に流されやすい、感動屋さん、美しいものが好き、人の心に関心がある', b:'冷静沈着、戦略的、女性よりも男性と打ち解けやすい、機械やシステム（人の体含む）に関心がある' },
+  // 軸4 (G/H) P/J
+  { axis:4, text:'自分一人で予定のない休日を過ごす時には？（今そうでない方は、独身で子どももいなかった頃について教えてください）', a:'計画を立ててもその時の気分を優先してそれに従わない、もしくは計画は立てない。', b:'計画を立て、その通りに進めるのが心地よい。' },
+  { axis:4, text:'人との待ち合わせには？', a:'ギリギリもしくは時間を過ぎて到着することが多い。', b:'余裕を持って到着することが多い。' },
+  { axis:4, text:'部屋や机周りが散らかっていると？', a:'パフォーマンスに影響はない。', b:'集中できない。' },
+  { axis:4, text:'より得意なのは？', a:'物事を新たに始める方が終わらせるよりも得意である。', b:'物事を終わらせる方が新たに始めるよりも得意である。' },
+  { axis:4, text:'私生活では？', a:'考えきる前にとりあえずやってみる、当たって砕けろタイプである。', b:'十分にシミュレーションした上で動き出す、石橋を叩いて渡るタイプである。' },
+];
+
+const AXIS_LABELS = {
+  1: { label:'第1軸', name:'エネルギーの向き', badge:'axis-1' },
+  2: { label:'第2軸', name:'情報の受け取り方', badge:'axis-2' },
+  3: { label:'第3軸', name:'判断の仕方', badge:'axis-3' },
+  4: { label:'第4軸', name:'生活スタイル', badge:'axis-4' },
+};
+
+// 16タイプのデータ
+const TYPES = {
+  ISTJ: {
+    strength: ['その人を形づくるもの（家庭のしきたり、育った家族、思い出など）を尊重する','よき市民として、社会・コミュニティで十分な責任を果たそうとする','取り組みを単発で終わらせず、習慣化する/繰り返せるよう手順を整える','緻密な作業を正確に行う'],
+    hidden: ['タスクを片っ端から片付ける','効果・効率を最大化することを考え、無駄を省く','リソース配分、人を適所にアサインする、リーダーシップ','問題を解決する'],
+    like: ['ルーティーン業務を正確に進めること','マニュアル・手順を整備すること','家族・大事な人たちのケアをすること'],
+    dislike: ['ルーティーンを邪魔されること','未知の多い新たな環境に身を置くこと','大きなリスクを取って挑戦すること'],
+    workstyle: '想いやビジョンよりも、ご自分の能力が最大限発揮でき、それに見合った評価が得られる働き方を渇望します。\n\nまた、どうしても必要のあるケースを除いて「これまでのやり方」「すでにうまく行くことが分かっている方法」を踏襲することを好み、失敗のない安全なやり方で着実に結果を出そうとします。\n\n組織で働くことを好む傾向にあり、そこで上下関係を大事にし、強い責任感で役割を全うします。「この人に任せれば安心」という信頼を周りから持たれることが多く、それがあなたのモチベーションとなるステイタスや社会的評価の獲得につながります。\n\n人の役に立ちたいという気持ち、またマニュアル・手順の整備などの得意を活かし、チームメンバーがミスなく仕事を進められるような環境整備をする役割が担えると、やりがいが感じられるはずです。'
+  },
+  ISFJ: {
+    strength: ['その人を形づくるもの（家庭のしきたり、育った家族、思い出など）を尊重する','よき市民として、社会・コミュニティで十分な責任を果たそうとする','取り組みを単発で終わらせず、習慣化する/繰り返せるよう手順を整える','緻密な作業を正確に行う'],
+    hidden: ['相手の先にいる第三者にまで思いを巡らせた上で、相手のニーズを読み、それを満たす','集団全体の和が保たれるよう、働きかける','社会・コミュニティが自分に期待していることを読み取り、応える'],
+    like: ['ルーティーン業務を正確に進めること','マニュアル・手順を整備すること','家族・大事な人たちのケアをすること'],
+    dislike: ['予定の変更、予期せぬ出来事へのアドリブ対応','未知の多い新たな環境に身を置くこと','大きなリスクを取って挑戦すること'],
+    workstyle: '人とのつながりを感じながらできるお仕事、たとえばチームで一つのゴールに向かう仕事や、人のケアをする仕事が向いています。\n\nよく見知ったものやルーティーンを好む傾向にあるため、突発的な対応を求められる業務、毎日大勢の知らない人とのやりとりが発生する業務よりも、ある程度手順の整った業務や、固定のメンバー・クライアントさん相手の業務の方がストレスがないはずです。\n\n人との感情的な関係を大事にされる一方、それがゆえに他者の感情を自分のそれ以上に真摯に受け止め、つらくなってしまうことがあります。誰かと関係を築く際は、相手のニーズだけでなく、相手と「自分」のニーズに目を向け、それを両者同時に叶える方法（自分も含めた全員がハッピーになれる選択）を考えてみると、つらさが軽減され、人との関係を今まで以上に温かく感じられるようになるはずです。'
+  },
+  INFJ: {
+    strength: ['自身の視点に執着することなく、第三者の視点から自分を含む人間関係や状況を俯瞰し、最適解を探す','自身の脳が思考を生み出す過程を俯瞰し、成熟すると他者の思考パターンをも把握する','人の何倍もの思考体力を持ち、本質を捉えた上でじっくり思考を深め、鋭い洞察をする'],
+    hidden: ['相手の先にいる第三者にまで思いを巡らせた上で、相手のニーズを読み、それを満たす','集団全体の和が保たれるよう、働きかける','社会・コミュニティが自分に期待していることを読み取り、応える'],
+    like: ['本質を考えること','未来を想像し、そこまでのシミュレーションをすること','抽象的なテーマについての思考'],
+    dislike: ['予定の変更、予期せぬ出来事へのアドリブ対応','思考活動を邪魔されること','十分な思考をせずにアクションすること'],
+    workstyle: '周りの気持ちを非常に敏感に感知し、まるで生きた「濾過器」のように人の心の重荷を取り除き、癒す能力に長けています。\n\nそのため、話を聞いてほしいと周りに人が集まってきますが、そこにストレスを抱えて辛くなることを避けるために、周りだけでなく「自分も含めた全体」をいい状態にするためにどうすべきかを考えるようにするのがおすすめです。\n\n組織（特に女性が多い組織）で円滑に働くために活きやすいのは「隠れた強み」ですが、あなたならではのユニークなポジションを築くこれ以上ないギフトが、「あなたを特徴づける強み」です。\n\nなぜなら、この強みは「WHY（本質）」を問い、一つのテーマについて多面的かつ深く思考し、人がなかなか辿り着かないような鋭い洞察を行うことを可能にするためです。\n\n広さよりも深さ、量よりも質が重視されるなど、この強みを活かせる働き方を選択されることをおすすめします。'
+  },
+  INTJ: {
+    strength: ['自身の視点に執着することなく、第三者の視点から自分を含む人間関係や状況を俯瞰し、最適解を探す','自身の脳が思考を生み出す過程を俯瞰し、成熟すると他者の思考パターンをも把握する','人の何倍もの思考体力を持ち、本質を捉えた上でじっくり思考を深め、鋭い洞察をする'],
+    hidden: ['タスクを片っ端から片付ける','効果・効率を最大化することを考え、無駄を省く','リソース配分、人を適所にアサインする、リーダーシップ','問題を解決する'],
+    like: ['本質を考えること','未来を想像し、そこまでのシミュレーションをすること','抽象的なテーマについての思考'],
+    dislike: ['予定の変更、予期せぬ出来事へのアドリブ対応','思考活動を邪魔されること','十分な思考をせずにアクションすること'],
+    workstyle: '費用対効果を重視し、結果を出す上で最もレバレッジの効くポイントをつねに探そうとします。同僚や顧客がゴールや本質を捉えずに、些末な（と思われる）事柄にばかりこだわることに疑問や苛立ちを感じることも少なくないはずです。\n\nこの背景には、思考体力に自信がある一方で体力に不安があるため、それを補うべく無駄をそぎ落とそうとする狙いもあるかもしれません。よって、熟考なしにひたすら行動することが求められるような仕事、上司やお客様の指示に従って従順に動くことが求められる環境は避けるのがおすすめです。\n\n逆に、コンサルタントやプロジェクトマネージャーはじめ、状況や物事を俯瞰して結果を出すための戦略を組み立てる仕事であれば、強みを発揮しつつ、やりがいも感じられるはずです。'
+  },
+  ISTP: {
+    strength: ['大量のデータ・情報を独自のフレームワークを通じて理解し、意思決定につなげる','論理の矛盾を発見する','自分自身の思考の一貫性を精査し、人からの指摘も受け止めながら、穴のない綺麗なロジックを構築する'],
+    hidden: ['今ここに100%集中し、五感をフル活用して情報収集する','突発的なトラブル対応、アドリブを利かせた柔軟な対応を得意とする','考えすぎず、地に足の着いたアクションをとる'],
+    like: ['大量の情報集めと分析','物事を捉える枠組み（フレームワーク）を考えること'],
+    dislike: ['一人で思考する時間の欠如','和を優先し、論理の矛盾や嘘を指摘せぬまま物事を進めること'],
+    workstyle: '対人のお仕事をされる場合、お悩み解決・ゴール達成にフォーカスし、それをあなたの専門性と論理的思考で支えるコンサルティング要素を濃くすると、強みが発揮しやすく、かつやりがいを感じながら仕事に取り組めるはずです。\n\n逆に、（特に女性相手の場合は、論理よりも感情を大事にする方も多いため、）相手の心中を引き出し整理するコーチングスタイルだと、飽きてしまったり、相手の論理立っていない感情・行動の矛盾が気になって指摘し、互いに辛くなってしまうかも知れません。\n\nまた、「これだ！」と確信を持ったテーマについて、概念的に考えるよりも、手を動かし、やってみることで実現につなげる力にも長けています。\n\nご自身の論理的納得感の追求はそのまま、外からの情報・フィードバックをよりオープンに受け入れるよう意識されると、強みが活かされ、かつ周りからも求められる働き方に繋がります。'
+  },
+  ISFP: {
+    strength: ['価値観・道徳観に従って動く','常に自分の心の動きを追っているため、人間の多様な感情に通じており、人の自己理解の支援、人との親密性の構築、人の感情を動かす表現などが得意','強い信念を持ち、ビジョンを描く。成熟すると、あらゆる困難を乗り越えてビジョンの実現を目指し、その姿で周りをインスパイアし、巻き込む。'],
+    hidden: ['今ここに100%集中し、五感をフル活用して情報収集する','突発的なトラブル対応、アドリブを利かせた柔軟な対応を得意とする','考えすぎず、地に足の着いたアクションをとる'],
+    like: ['対話（自己・他者）','自己表現（文章・アートなど）'],
+    dislike: ['内省時間の欠如','人との衝突・安心感のない人間関係','固いルールやスケジュールの強制','内的意義を見出せない仕事'],
+    workstyle: 'ボディランゲージや目の動き、声のトーンなど、多くの人が見逃してしまう些細なサインから相手の状態を敏感に読み取り、それに応じたコミュニケーションを取る能力が高いです。\n\nまた、人の複雑な感情に通じ、それを表現することを好みます。その際、言語ではニュアンスを伝え切れないと感じられる場合は、アートやパフォーマンス、ファッション、その他五感を使った手段を通じ、自分の内側を表現されることをお勧めします。人に関する情報を五感優位でキャッチするため、自分の見せ方、流行や周囲受けを踏まえた美的センスも優れています。\n\nまた、「これだ！」と確信を持ったテーマについて、概念的に考えるよりも、手を動かし、やってみることで実現につなげる力にも長けています。\n\nきっと強い想いをお持ちのはずなので、悩みすぎずに動いてみてください。外からのフィードバックを踏まえ、それをどう具体的なプロジェクトや表現に結び付けるかを考えられると、ネクストステップが見えてくるはずです。'
+  },
+  INFP: {
+    strength: ['価値観・道徳観に従って動く','常に自分の心の動きを追っているため、人間の多様な感情に通じており、人の自己理解の支援、人との親密性の構築、人の感情を動かす表現などが得意','強い信念を持ち、ビジョンを描く。成熟すると、あらゆる困難を乗り越えてビジョンの実現を目指し、その姿で周りをインスパイアし、巻き込む。'],
+    hidden: ['想像力が豊かで、新たなパターンに気が付き、クリエイティブである','前例・経験がないことに対してオープンである','好奇心が強く、さまざまな可能性に目が向き、楽観的である'],
+    like: ['対話（自己・他者）','自己表現（文章・アートなど）'],
+    dislike: ['内省時間の欠如','人との衝突・安心感のない人間関係','固いルールやスケジュールの強制','内的意義を見出せない仕事'],
+    workstyle: '人の感情を深く理解する力と、一見つながりのないものの間にパターンを見出す力を合わせて発揮できるお仕事で、輝きやすいです。誰かとアイデアを膨らませながら、世の中の美しさ（文化・多様性他）を新たな角度から切り取る・表現することに、情熱・強みを感じやすいはずです。\n\nまた、道徳観が強いため、この世界の不条理・不平等、自らの力で自らを守れない子ども・動物の待遇改善等に強い想いを持っていらっしゃることも考えられます。その場合には、文章やアートを通じてそれを伝えるようなクリエイティブなお仕事もおすすめです。\n\nいずれの場合も、不可欠なのは、断片的な「やりたいこと」以上の、「心から情熱を感じられるビジョン（実現したい社会・世界）」です。そして、新たな経験や人との出会いを通じて自分の枠を広げ続けることで、常識や固定概念にとらわれず、それを実現するためのクリエイティブな方法を模索し続けることです。\n\nそれがあれば、飽きを感じたり困難に負けることなくゴールに向かって突き進み、その背中を見せることで周りを感化し、動かす存在になることができます。'
+  },
+  INTP: {
+    strength: ['大量のデータ・情報を独自のフレームワークを通じて理解し、意思決定につなげる','論理の矛盾を発見する','自分自身の思考の一貫性を精査し、人からの指摘も受け止めながら、穴のない綺麗なロジックを構築する'],
+    hidden: ['想像力が豊かで、新たなパターンに気が付き、クリエイティブである','前例・経験がないことに対してオープンである','好奇心が強く、さまざまな可能性に目が向き、楽観的である'],
+    like: ['大量の情報集めと分析','物事を捉える枠組み（フレームワーク）を考えること'],
+    dislike: ['一人で思考する時間の欠如','和を優先し、論理の矛盾や嘘を指摘せぬまま物事を進めること'],
+    workstyle: '持ち前の情報収集力に加え、クリエイティビティやパターン認識力も高いため、頭の中にある大量の知識・情報を今までにない独自のフレームワークで捉え直し、分かりやすく伝える方法を考えてみるのがおすすめです。\n\n対人のお仕事をされる場合、相手に共感する・寄り添うカウンセリング・コーチングスタイルだと、飽きてしまったり、相手の論理立っていない感情・行動の矛盾が気になってフラストレーションを覚えてしまうかも知れません。\n\nお悩み解決・ゴール達成にフォーカスし、それをあなたの専門性と論理的思考で支えるコンサルティング要素を濃くすると、強みが発揮しやすく、かつやりがいを感じながら仕事に取り組めるはずです。'
+  },
+  ESTP: {
+    strength: ['今ここに100%集中し、五感をフル活用して情報収集する','突発的なトラブル対応、アドリブを利かせた柔軟な対応を得意とする','相手のボディランゲージを高い精度で読み取る','考えすぎず、地に足の着いたアクションをとる'],
+    hidden: ['大量のデータ・情報を独自のフレームワークを通じて理解し、意思決定につなげる','論理の矛盾を発見し、指摘する','自分自身の思考の一貫性を精査し、人からの指摘も受け止めながら、穴のない綺麗なロジックを構築する'],
+    like: ['スポーツ、アート、ファッション、音楽など、道具を使った活動（能力の限界を問われるような、レベルの高いものを好む）','アドリブ対応'],
+    dislike: ['動く前に入念な思考活動やシミュレーション、計画を強いられること','自分の今の気持ちに従って行動できないこと'],
+    workstyle: 'ボディランゲージや目の動き、声のトーンなど、多くの人が見逃してしまう些細なサインから相手の状態を敏感に読み取り、それに応じたコミュニケーション（一対一の交渉、集団相手のパフォーマンスなど含む）を取る能力が高いです。\n\nシステム思考が強く、機械であっても人の思考や体であっても、あらゆるものの原理を理解し、問題がある場合はそれを修正しようとします。\n\n平凡な日常が続くと飽きてしまうところがあるため、これら強みを活かすことができ、かつ突発的な判断やトラブル対応など（多くの人が苦手）が求められるスリリングな要素のあるお仕事で特に力を発揮できると言えます。\n\n考え込むよりもまず行動してみることが、学びを深め、成長を加速することに繋がります。'
+  },
+  ESFP: {
+    strength: ['今ここに100%集中し、五感をフル活用して情報収集する','突発的なトラブル対応、アドリブを利かせた柔軟な対応を得意とする','相手のボディランゲージを高い精度で読み取る','考えすぎず、地に足の着いたアクションをとる'],
+    hidden: ['価値観・道徳観を行動指標とする','常に自分の心の動きを追っているため、人間の多様な感情に通じており、人の自己理解の支援、人との親密性の構築、人の感情を動かす表現などを得意とする'],
+    like: ['スポーツ、アート、ファッション、音楽など、道具を使った活動（能力の限界を問われるような、レベルの高いものを好む）','アドリブ対応'],
+    dislike: ['動く前に入念な思考活動やシミュレーション、計画を強いられること','自分の今の気持ちに従って行動できないこと'],
+    workstyle: 'ボディランゲージや目の動き、声のトーンなど、多くの人が見逃してしまう些細なサインから相手の状態を敏感に読み取り、それに応じたコミュニケーション（一対一の交渉、集団相手のパフォーマンスなど含む）を取る能力が高いです。\n\nまた、人に興味が強く、人に関する情報を五感優位でキャッチするため、自分の見せ方、流行や周囲受けを踏まえた美的センスにも長けています。\n\n平凡な日常が続くと飽きてしまうところがあるため、これら強みを活かすことができ、かつ突発的な判断やトラブル対応など（多くの人が苦手）が求められるスリリングな要素のあるお仕事で特に力を発揮できるはずです。'
+  },
+  ENFP: {
+    strength: ['一見無関係な物事同士の間につながりを見出し、新たなパターンを認識し、創造性を発揮する','前例・経験がないことに対してオープンである','想像力が豊かで好奇心が強く、さまざまな可能性に目が向き、楽観的である'],
+    hidden: ['価値観・道徳観を行動指標とする','常に自分の心の動きを追っているため、人間の多様な感情に通じており、人の自己理解の支援、人との親密性の構築、人の感情を動かす表現などを得意とする'],
+    like: ['未知の世界に飛び込むこと','視野を広げてくれる、学習・体験','クリエイティブチャレンジ','ブレインストーミング'],
+    dislike: ['過去のしきたり・ルールを無条件に踏襲すること','正確さ・緻密さを求められる作業','ルーティーンの徹底'],
+    workstyle: '楽観的で創造性に富み、アイデア溢れる人たちと新たなものの見方・可能性を議論することを楽しみます。\n\n頭にはいつも「なぜ？」「この場合はどうなる？」という問いが浮かんでおり、加えてリスクを取ることに抵抗がないため、人がなかなかしないような斬新な挑戦・（傍から見ると）大胆な行動を繰り返す傾向にあります。そのクリエイティビティやカリスマ要素に惹かれ、周りに自然と人が集まることが多いです。\n\n自由（制限されない）、パターン認識、クリエイティビティなどが、あなたらしい働き方のキーワードです。感情を動かして人を熱くさせ、仲間として巻き込み、イノベーションを起こす力に長けているので、それを遺憾なく発揮できる環境に身を置くのがおすすめです。'
+  },
+  ENTP: {
+    strength: ['一見無関係な物事同士の間につながりを見出し、新たなパターンを認識し、創造性を発揮する','前例・経験がないことに対してオープンである','想像力が豊かで好奇心が強く、さまざまな可能性に目が向き、楽観的である'],
+    hidden: ['大量のデータ・情報を独自のフレームワークを通じて理解し、意思決定につなげる','論理の矛盾を発見し、指摘する','自分自身の思考の一貫性を精査し、人からの指摘も受け止めながら、穴のない綺麗なロジックを構築する'],
+    like: ['未知の世界に飛び込むこと','視野を広げてくれる、学習・体験','クリエイティブチャレンジ','ブレインストーミング'],
+    dislike: ['過去のしきたり・ルールを無条件に踏襲すること','正確さ・緻密さを求められる作業','ルーティーンの徹底'],
+    workstyle: '楽観的で創造性に富み、アイデア溢れる人たちと新たなものの見方・可能性を議論することを楽しみます。\n\n頭にはいつも「なぜ？」「この場合はどうなる？」という問いが浮かんでおり、加えてリスクを取ることに抵抗がないため、人がなかなかしないような斬新な挑戦・（傍から見ると）大胆な行動を繰り返す傾向にあります。そのクリエイティビティやカリスマ要素に惹かれ、周りに自然と人が集まることが多いです。\n\n自由（制限されない）、パターン認識、クリエイティビティなどが、あなたらしい働き方のキーワードです。大量の情報を集め、既知を疑って斬新なコンセプトを打ち立て、イノベーションを起こす力に長けているので、それを遺憾なく発揮できる環境に身を置くのがおすすめです。'
+  },
+  ESTJ: {
+    strength: ['タスクを片っ端から片付ける','効果・効率を最大化することを考え、無駄を省く','リソース配分、人を適所にアサインする、リーダーシップ','問題を解決する'],
+    hidden: ['その人を形づくるもの（家庭のしきたり、育った家族、思い出など）を尊重する','よき市民として、社会・コミュニティで十分な責任を果たそうとする','取り組みを単発で終わらせず、習慣化する/繰り返せるよう手順を整える','緻密な作業を正確に行う'],
+    like: ['to doリストを作成し、片っ端から片付けること（オフィスワークなど）','ゴール達成のためのシミュレーション','人を動かし、プロジェクトを推進すること'],
+    dislike: ['ゴール達成を妨げる個人の感情','目的のない自己表現','努力・能力不足'],
+    workstyle: '想いやビジョンよりも、自分の能力が最大限発揮でき、それに見合った評価が得られる働き方を渇望します。\n\nステイタスや社会的評価の獲得がモチベーションになり、かつそのやり方も心得ているため、会社・組織でマネージャーとして活躍する傾向にあります。仕事を多く抱えることは苦になりませんが、あらゆる物事（スケジュール、脳内、身の回りの環境）が秩序立っていないとストレスを感じがちなため、がむしゃらにタスクを片付けるよりも、周りに仕事を切り出したり、自動対応を叶える仕組み化思考を強めるのがおすすめです。\n\n部下やメンバーに、個人の感情や個性を重視してゴールへの最短ルートをとらない方がいる場合、理解に苦しみ、最も効果的に見えるやり方を選ぶよう指導したくなるかもしれません。\n\nですが、人を変えることはできないということ、またそういったメンバーの能力を引き出すことこそが本当の意味で効果的なゴール達成方法だと腑に落ちれば、今以上に強いリーダーシップを発揮できるようになるはずです。'
+  },
+  ESFJ: {
+    strength: ['相手の先にいる第三者にまで思いを巡らせた上で、相手のニーズを読み、それを満たす','大勢の場で、皆が心地よく過ごせるよう気を配り、もてなす','感情を外に向けて表現し、それを通じて人との関係を築く','集団において、個人間の関係性を読み取り、配慮する'],
+    hidden: ['その人を形づくるもの（家庭のしきたり、育った家族、思い出など）を尊重する','よき市民として、社会・コミュニティで十分な責任を果たそうとする','取り組みを単発で終わらせず、習慣化する/繰り返せるよう手順を整える','緻密な作業を正確に行う'],
+    like: ['相手のニーズを読み、叶えること','人と感情的なつながりを築くこと','集団全体がいい状態に保たれるよう、働きかけること'],
+    dislike: ['人の気持ちを考えない物言い','集団の和を顧みない個人の自己中心的な振る舞い','上下関係への配慮のなさ'],
+    workstyle: '心から周りの人を気遣い、愛情を注ぐため、多くの人とつながりを持ち、自然と人に囲まれることが多いはずです。人とのつながりを感じながらできるお仕事、たとえばチームで一つのゴールに向かう仕事や、人のケアをする仕事が向いています。\n\n不確実性の高い状況にストレスを感じやすいため、突発的な対応を求められる業務を避けたり、持ち前のマニュアルづくりの力を活かして見通しが立つ状態を整えると、気持ちよく働けるはずです。\n\n人との感情的な関係を大事にされる一方、それがゆえに他者の感情を自分のそれ以上に真摯に受け止め、つらくなってしまうことがあります。\n\n誰かと関係を築く際は、相手のニーズだけでなく、相手と「自分」のニーズに目を向け、それを両者同時に叶える方法（自分も含めた全員がハッピーになれる選択）を考えてみると、つらさが軽減され、人との関係を今まで以上に温かく感じられるようになるはずです。'
+  },
+  ENFJ: {
+    strength: ['相手の先にいる第三者にまで思いを巡らせた上で、相手のニーズを読み、それを満たす','集団全体の和が保たれるよう、働きかける','感情を外に向けて表現し、それを通じて人との関係を築く','社会・コミュニティが自分に期待していることを読み取り、応える'],
+    hidden: ['自身の視点に執着することなく、第三者の視点から自分を含む人間関係や状況を俯瞰し、最適解を探す','自身の脳が思考を生み出す過程を俯瞰し、成熟すると他者の思考パターンをも把握する','人の何倍もの思考体力を持ち、本質を捉えた上でじっくり思考を深め、鋭い洞察をする'],
+    like: ['相手のニーズを読み、叶えること','人と感情的なつながりを築くこと','集団全体がいい状態に保たれるよう、働きかけること'],
+    dislike: ['人の気持ちを考えない物言い','集団の和を顧みない個人の自己中心的な振る舞い','上下関係への配慮のなさ'],
+    workstyle: '人とのつながりを感じながらできるお仕事、たとえばチームで一つのゴールに向かう仕事や、人のケアをする仕事が向いています。\n\n人と人との関係を俯瞰して捉える特徴を活かし、人間関係のコンサルティング・コーチング・カウンセリング（たとえばリレーションシップコーチ、恋愛コーチなど）で活躍できる可能性があります。\n\n人との感情的な関係を大事にされる一方、それがゆえに他者の感情を自分のそれ以上に真摯に受け止め、つらくなってしまうことがあります。\n\n誰かと関係を築く際は、相手のニーズだけでなく、相手と「自分」のニーズに目を向け、それを両者同時に叶える方法（自分も含めた全員がハッピーになれる選択）を考えてみると、つらさが軽減され、人との関係を今まで以上に温かく感じられるようになるはずです。'
+  },
+  ENTJ: {
+    strength: ['タスクを片っ端から片付ける','効果・効率を最大化することを考え、無駄を省く','リソース配分、人を適所にアサインする、リーダーシップ','問題を解決する'],
+    hidden: ['自身の視点に執着することなく、第三者の視点から自分を含む人間関係や状況を俯瞰し、最適解を探す','自身の脳が思考を生み出す過程を俯瞰し、成熟すると他者の思考パターンをも把握する','人の何倍もの思考体力を持ち、本質を捉えた上でじっくり思考を深め、鋭い洞察をする'],
+    like: ['to doリストを作成し、片っ端から片付けること','ゴール達成のためのシミュレーション','メンバーへの仕事の割り振りをはじめとするリソース管理'],
+    dislike: ['ゴール達成を妨げる個人の感情','目的のない自己表現','怠惰','努力・能力不足'],
+    workstyle: '想いやビジョンよりも、能力が最大限発揮でき、それに見合った評価が得られる働き方を渇望します。ステイタスや社会的評価の獲得がモチベーションになり、かつそのやり方も心得ているため、会社・組織でマネージャーとして活躍する傾向にあります。\n\n仕事を多く抱えることは苦になりませんが、あらゆる物事（スケジュール、脳内、身の回りの環境）が秩序立っていないとストレスを感じがちなため、がむしゃらにタスクを片付けるよりも、周りに仕事を切り出したり、自動対応することを可能にするような、仕組み化思考を強めるのがおすすめです。\n\n費用対効果を重視し、結果を出す上で最もレバレッジの効くポイントをつねに探そうとします。\n\n人を率いる立場に立ち、持ち前の先見の明や逆算思考を活かして社会やビジネスを動かす仕事に就くことができれば、情熱を感じられるはずです。'
+  },
+};
+
+// ABCD→MBTI変換
+// 軸1: A=I, B=E / 軸2: A=S, B=N / 軸3: A=F, B=T / 軸4: A=P, B=J
+function getType(answers) {
+  const counts = {1:{A:0,B:0}, 2:{A:0,B:0}, 3:{A:0,B:0}, 4:{A:0,B:0}};
+  answers.forEach((ans, i) => {
+    const axis = QUESTIONS[i].axis;
+    if (ans === 'A' || ans === 'B') counts[axis][ans]++;
+  });
+  // A多数→I/S/F/P、B多数→E/N/T/J
+  const dim1 = counts[1].A >= counts[1].B ? 'I' : 'E';
+  const dim2 = counts[2].A >= counts[2].B ? 'S' : 'N';
+  const dim3 = counts[3].A >= counts[3].B ? 'F' : 'T';
+  const dim4 = counts[4].A >= counts[4].B ? 'P' : 'J';
+  return { code: dim1+dim2+dim3+dim4, counts, dim1, dim2, dim3, dim4 };
+}
+
+// State
+let currentQ = 0;
+let answers = [];
+let userName = '';
+let userAge = '';
+let userWork = '';
+
+function startDiagnosis() {
+  userAge = document.getElementById('input-age').value;
+  userWork = document.getElementById('input-work').value;
+  if (!userAge || !userWork) {
+    alert('ご年代・働き方をご入力ください。');
+    return;
+  }
+  answers = new Array(20).fill(null);
+  currentQ = 0;
+  showScreen('questions');
+  renderQ();
+}
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function renderQ() {
+  const q = QUESTIONS[currentQ];
+  const total = QUESTIONS.length;
+  const pct = Math.round((currentQ / total) * 100);
+
+  document.getElementById('progress-text').textContent = `質問 ${currentQ+1} / ${total}`;
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  const ax = AXIS_LABELS[q.axis];
+  document.getElementById('axis-badge-wrap').innerHTML =
+    `<span class="axis-badge ${ax.badge}">${ax.label}：${ax.name}</span>`;
+
+  document.getElementById('q-number').textContent = `質問 ${currentQ+1}`;
+  document.getElementById('q-text').textContent = q.text;
+
+  const choicesEl = document.getElementById('choices');
+  const sel = answers[currentQ];
+  choicesEl.innerHTML = `
+    <button class="choice-btn${sel==='A'?' selected':''}" onclick="selectAnswer('A')">
+      <span class="choice-inner"><span class="choice-label">A</span>${q.a}</span>
+    </button>
+    <button class="choice-btn${sel==='B'?' selected':''}" onclick="selectAnswer('B')">
+      <span class="choice-inner"><span class="choice-label">B</span>${q.b}</span>
+    </button>
+  `;
+
+  document.getElementById('btn-prev').style.display = currentQ === 0 ? 'none' : '';
+  document.getElementById('btn-next').textContent = currentQ === total-1 ? '結果を見る →' : '次へ →';
+  document.getElementById('btn-next').disabled = sel === null;
+}
+
+function selectAnswer(val) {
+  answers[currentQ] = val;
+  document.querySelectorAll('.choice-btn').forEach((btn, i) => {
+    btn.classList.toggle('selected', i === (val==='A'?0:1));
+    btn.querySelectorAll('.choice-label').forEach((lbl, li) => {
+      // handled by CSS
+    });
+  });
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextQ() {
+  if (answers[currentQ] === null) return;
+  if (currentQ < QUESTIONS.length - 1) {
+    currentQ++;
+    renderQ();
+  } else {
+    showResult();
+  }
+}
+
+function prevQ() {
+  if (currentQ > 0) { currentQ--; renderQ(); }
+}
+
+function showResult() {
+  const {code, counts, dim1, dim2, dim3, dim4} = getType(answers);
+  const data = TYPES[code];
+
+  const strengthHtml = data.strength.map(s => `<li>${s}</li>`).join('');
+  const hiddenHtml = data.hidden.map(s => `<li>${s}</li>`).join('');
+  const likeHtml = data.like.map(s => `<li>${s}</li>`).join('');
+  const dislikeHtml = data.dislike.map(s => `<li>${s}</li>`).join('');
+  const workHtml = data.workstyle.split('\n\n').map(p => `<p style="margin-bottom:0.9rem">${p}</p>`).join('');
+
+  document.getElementById('result-content').innerHTML = `
+    <div class="result-header">
+      <div style="font-size:0.8rem;color:var(--text-light);margin-bottom:0.8rem">${userAge} / ${userWork}</div>
+    </div>
+
+    <div class="two-col">
+      <div class="result-section">
+        <div class="result-section-title">あなたを特徴づける才能・強み</div>
+        <ul class="result-items">${strengthHtml}</ul>
+      </div>
+      <div class="result-section">
+        <div class="result-section-title hidden-strength">隠れた強み<br><small style="font-size:0.75rem;font-weight:400">（まだ活かしきれていない可能性あり）</small></div>
+        <ul class="result-items">${hiddenHtml}</ul>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="result-section">
+        <div class="result-section-title like">好き・フロー（没頭）</div>
+        <ul class="result-items">${likeHtml}</ul>
+      </div>
+      <div class="result-section">
+        <div class="result-section-title dislike">嫌い・ストレス源</div>
+        <ul class="result-items">${dislikeHtml}</ul>
+      </div>
+    </div>
+
+    <div class="result-section">
+      <div class="result-section-title workstyle">あなたに合った働き方</div>
+      <div class="result-text">${workHtml}</div>
+    </div>
+
+    <div class="cta-section">
+      <h3>4-dayメール「自分を削らずに、信頼される。」</h3>
+      <p style="margin-bottom:1rem">頑張っているのに、手応えがない。必要とされたくて、気づけば自分を消している。そんな感覚がある方へ。自分の特性を活かした、自分らしい信頼のつくり方を4日間でお届けします。</p>
+      <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:1.2rem">📅 配信：来週月〜木曜日 12時</p>
+      <a href="https://55auto.biz/eri1203nyc/registp/entryform_.htm" target="_blank" style="display:block;text-decoration:none;">
+        <button class="btn-register" style="width:100%;">自分らしい働き方を、一緒に考える →</button>
+      </a>
+      <p style="font-size:0.75rem;color:var(--text-light);text-align:center;margin-top:0.8rem">登録後、確認メールをお送りします</p>
+    </div>
+
+    <button class="btn-retry" onclick="retry()">← もう一度診断する</button>
+  `;
+
+  showScreen('result');
+}
+
+function registerEmail() {
+  const email = document.getElementById('email-input').value.trim();
+  if (!email || !email.includes('@')) {
+    alert('正しいメールアドレスを入力してください。');
+    return;
+  }
+  alert(`${email} にご登録いただきました。\nメールをお楽しみに！`);
+}
+
+function retry() {
+  showScreen('intro');
+  document.getElementById('input-age').value = '';
+  document.getElementById('input-work').value = '';
+}
+</script>
+</body>
+</html>
