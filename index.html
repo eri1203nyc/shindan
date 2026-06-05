@@ -457,31 +457,6 @@ body {
     <div class="intro-card">
       <h2>はじめに</h2>
       <p>心理学と脳科学を取り入れた特性分析で、あなたのものの見方や意思決定の仕方を推測・診断します。<br>直感で答えてください。</p>
-      <div class="form-group">
-        <label>ご年代 <span style="color:var(--rose)">*</span></label>
-        <select id="input-age">
-          <option value="">選択してください</option>
-          <option>20～24</option>
-          <option>25～29</option>
-          <option>30～34</option>
-          <option>35～39</option>
-          <option>40～44</option>
-          <option>45～49</option>
-          <option>50～54</option>
-          <option>その他</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>働き方 <span style="color:var(--rose)">*</span></label>
-        <select id="input-work">
-          <option value="">選択してください</option>
-          <option>会社員（マネージャー）</option>
-          <option>会社員（リーダー）</option>
-          <option>会社員（メンバー）</option>
-          <option>個人事業主</option>
-          <option>その他</option>
-        </select>
-      </div>
       <button class="btn-start" onclick="startDiagnosis()">診断スタート →</button>
     </div>
   </div>
@@ -692,12 +667,6 @@ let userAge = '';
 let userWork = '';
 
 function startDiagnosis() {
-  userAge = document.getElementById('input-age').value;
-  userWork = document.getElementById('input-work').value;
-  if (!userAge || !userWork) {
-    alert('ご年代・働き方をご入力ください。');
-    return;
-  }
   answers = new Array(20).fill(null);
   currentQ = 0;
   showScreen('questions');
@@ -779,7 +748,6 @@ function showResult() {
 
   document.getElementById('result-content').innerHTML = `
     <div class="result-header">
-      <div style="font-size:0.8rem;color:var(--text-light);margin-bottom:0.8rem">${userAge} / ${userWork}</div>
     </div>
 
     <div class="two-col">
@@ -810,11 +778,11 @@ function showResult() {
     </div>
 
     <div class="cta-section">
-      <h3>4-dayメール「自分を削らずに、信頼される。」</h3>
-      <p style="margin-bottom:1rem">頑張っているのに、手応えがない。必要とされたくて、気づけば自分を消している。そんな感覚がある方へ。自分の特性を活かした、自分らしい信頼のつくり方を4日間でお届けします。</p>
+      <h3>4-day無料メールレッスン「自分を削らずに、信頼される。」</h3>
+      <p style="margin-bottom:1rem">頑張っているのに、手応えがない。必要とされたくて、気づけば自分を消している。そんな感覚がある方へ。<br>特性・強みを活かした、自分らしい信頼のつくり方をメルマガ限定でお届けします。</p>
       <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:1.2rem">📅 配信：来週月〜木曜日 12時</p>
       <a href="https://55auto.biz/eri1203nyc/registp/entryform_.htm" target="_blank" style="display:block;text-decoration:none;">
-        <button class="btn-register" style="width:100%;">自分らしい働き方を、一緒に考える →</button>
+        <button class="btn-register" style="width:100%;">4日間で特性の活かし方を知る →</button>
       </a>
       <p style="font-size:0.75rem;color:var(--text-light);text-align:center;margin-top:0.8rem">登録後、確認メールをお送りします</p>
     </div>
