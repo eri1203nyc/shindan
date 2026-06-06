@@ -747,9 +747,6 @@ function showResult() {
   const workHtml = data.workstyle.split('\n\n').map(p => `<p style="margin-bottom:0.9rem">${p}</p>`).join('');
 
   document.getElementById('result-content').innerHTML = `
-    <div class="result-header">
-    </div>
-
     <div class="two-col">
       <div class="result-section">
         <div class="result-section-title">あなたを特徴づける才能・強み</div>
@@ -778,11 +775,11 @@ function showResult() {
     </div>
 
     <div class="cta-section">
-      <h3>4-day無料メールレッスン「自分を削らずに、信頼される。」</h3>
-      <p style="margin-bottom:1rem">頑張っているのに、手応えがない。必要とされたくて、気づけば自分を消している。そんな感覚がある方へ。<br>特性・強みを活かした、自分らしい信頼のつくり方をメルマガ限定でお届けします。</p>
-      <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:1.2rem">📅 配信：来週月〜木曜日 12時</p>
+      <div style="font-size:0.8rem;font-weight:600;color:var(--teal);letter-spacing:0.05em;margin-bottom:0.6rem">✦ 診断を受けた方への特別メール</div>
+      <h3 style="font-size:1.1rem;margin-bottom:0.8rem">生まれ持った強みを活かしきれていないあなたへ</h3>
+      <p style="margin-bottom:0.8rem">なぜ特性を活かすのが難しいのか？<br>どうすれば、自分を消さずに、らしさで信頼を得られるのか？<br><strong>【メルマガ限定】4日間の無料メールレッスン</strong>でお伝えします。</p>
       <a href="https://55auto.biz/eri1203nyc/registp/entryform_.htm" target="_blank" style="display:block;text-decoration:none;">
-        <button class="btn-register" style="width:100%;">4日間で特性の活かし方を知る →</button>
+        <button class="btn-register" style="width:100%;background:var(--teal);font-size:1rem;padding:1rem;">4日間で特性の活かし方を知る →</button>
       </a>
       <p style="font-size:0.75rem;color:var(--text-light);text-align:center;margin-top:0.8rem">登録後、確認メールをお送りします</p>
     </div>
